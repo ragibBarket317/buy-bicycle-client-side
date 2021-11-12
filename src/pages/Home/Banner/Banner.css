@@ -1,0 +1,9 @@
+.background-img {
+    height: 85vh;
+    background-image: url(../../../images/bike.jpg);
+    background-color: rgba(41, 40, 40, 0.85);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: darken;
+}

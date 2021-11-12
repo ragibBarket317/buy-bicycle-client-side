@@ -1,0 +1,7 @@
+.bg-img {
+    background-image: url('../../../images/pensive-man-riding-down-hill_329181-8688.jpg');
+    background-color: rgba(161, 22, 22, 0.95);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: darken;
+}
