@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import './Banner.css';
 
 const Banner = () => {
@@ -12,7 +13,7 @@ const Banner = () => {
                             <h1>Welcome to BuyByCycle</h1>
                             <h5 className="my-3">cycling improves mental well-being & Strengthen your immune system </h5>
                             <div>
-                                <div className="btn btn-danger shadow-lg">More Product</div>
+                                <Link to="/product"><div className="btn btn-danger shadow-lg">More Product</div></Link>
                             </div>
                         </div>
                     </div>
