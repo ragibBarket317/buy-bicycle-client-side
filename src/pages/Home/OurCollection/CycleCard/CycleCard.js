@@ -1,11 +1,12 @@
 import React from 'react';
 import { Card, CardGroup, Col, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const CycleCard = (props) => {
-    const { name, title, img, userRating, rating, price } = props.cycle;
+    const { name, title, img, userRating, rating, price, _id } = props.cycle;
     return (
-        <Col md={4} className="my-3">
-            <CardGroup className="h-100 text-center shadow">
+        <Col sm={12} md={4} className="my-3">
+            <CardGroup className="h-100 text-center shadow-md">
                 <Card>
                     <div>
                         <Card.Img variant="top" src={img} style={{ width: "250px", height: "250px" }} />
@@ -19,7 +20,7 @@ const CycleCard = (props) => {
                         </Card.Text>
                     </Card.Body>
                     <div className="text-center py-3">
-                        <Button variant="danger" className="w-50"> Buy Now</Button>
+                        <Link to={`purchase/${_id}`}><Button variant="danger" className="w-50"> Buy Now</Button></Link>
                     </div>
                 </Card>
             </CardGroup>

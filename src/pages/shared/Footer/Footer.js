@@ -8,7 +8,7 @@ const Footer = () => {
         <div style={{ paddingTop: "80px" }} className="bg-dark text-white">
             <div className="container">
                 <div className="row pb-5">
-                    <div className="col-4">
+                    <div className="col-12 col-md-4">
                         <h3 className="mb-3">Useful Links</h3>
                         <li className="mb-2 fw-bolder">About us</li>
                         <li className="mb-2 fw-bolder">Our community</li>
@@ -16,13 +16,13 @@ const Footer = () => {
                         <li className="mb-2 fw-bolder">Privacy police</li>
                         <li className="mb-2 fw-bolder">Service plus</li>
                     </div>
-                    <div className="col-4">
+                    <div className="col-12 col-md-4">
                         <h3 className="mb-3">Our Shop</h3>
                         <li className="mb-2 fw-bolder">Bikes & parts</li>
                         <li className="mb-2 fw-bolder">Bike for rent</li>
                         <li className="mb-2 fw-bolder">Booking form</li>
                     </div>
-                    <div className="col-4">
+                    <div className="col-12 col-md-4">
                         <h3 className="mb-3">Subscribe</h3>
                         <div>
                             <input type="email" name="" id="" />

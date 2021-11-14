@@ -1,73 +1,87 @@
-import React from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
-import { Form } from 'react-bootstrap';
+import { Container, Typography, TextField, Button, CircularProgress, Alert } from '@mui/material';
+import React, { useState } from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { Box } from '@mui/system';
 import Header from '../shared/Header/Header';
 import Footer from '../shared/Footer/Footer';
 
-const Registration = () => {
-    const { signInUsingGoogle, registerUsingEmailPassword, handleEmail, handlePassword, handleNameChange, setUserName, error, setError, password } = useAuth();
-    const location = useLocation();
+const Register = () => {
+    const [loginData, setLoginData] = useState({});
     const history = useHistory();
-    const redirect_uri = location.state?.from || '/login';
-    // Google Rediract process
-    const googleLogin = () => {
-        signInUsingGoogle()
-            .then((result) => {
-                history.push(redirect_uri)
-            })
+    const { user, registerUser, isLoading, authError } = useAuth();
+
+    const handleOnBlur = e => {
+        const field = e.target.name;
+        const value = e.target.value;
+        const newLoginData = { ...loginData };
+        newLoginData[field] = value;
+        setLoginData(newLoginData);
     }
-    // Redirect Location Process
-    const emailPasswordRegister = () => {
-        if (password.length < 6) {
-            setError('please enter at least 6 charectar')
-            return;
+    const handleLoginSubmit = e => {
+        if (loginData.password !== loginData.password2) {
+            alert('Your password did not match');
+            return
         }
-        registerUsingEmailPassword()
-            .then((result) => {
-                history.push(redirect_uri)
-                setError('')
-                setUserName()
-                alert('Registration Successful. Please Login')
-            })
-            .catch((error) => {
-                setError(error.message)
-            })
+        registerUser(loginData.email, loginData.password, loginData.name, history);
+        e.preventDefault();
     }
     return (
-        <div>
+        <Box>
             <Header></Header>
-            <div className="container py-5">
-                <div className="w-50 mx-auto">
-                    <div style={{ backgroundColor: "#F0F2F2", padding: "20px" }} className="mt-5">
-                        <div>
-                            <h2 className="mb-3 text-center">Please Register</h2>
-                            <Form.Group className="mb-2" controlId="formGroupEmail">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control onBlur={handleNameChange} type="text" placeholder="Enter name" />
-                            </Form.Group>
-                            <Form.Group className="mb-2" controlId="formGroupEmail">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control onBlur={handleEmail} type="email" placeholder="Enter email" />
-                            </Form.Group>
-                            <Form.Group className="mb-2" controlId="formGroupPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control onBlur={handlePassword} type="password" placeholder="Password" />
-                            </Form.Group>
-                            <p className="text-danger">{error}</p>
-                            <button onClick={emailPasswordRegister} className="btn btn-primary w-100 mt-2" type="submit">Register</button><br />
-                            <p className="text-center mt-3">--------------------OR----------------------</p>
-                            <div className="text-center mt-2">
-                                <button onClick={googleLogin} className="btn btn-warning w-lg-25 mx-3" type="submit">Google Sign in</button>
-                                <p>already have an account? please <Link to="/login">login</Link></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Container style={{ textAlign: "center" }} sx={{ p: 5 }}>
+                <Box sx={{ boxShadow: 4 }} style={{ backgroundColor: "#F0F2F2", padding: '30px 0' }}>
+                    <Typography variant="h4" gutterBottom>Please Register</Typography>
+                    {!isLoading && <form onSubmit={handleLoginSubmit}>
+                        <TextField
+                            sx={{ width: '50%', m: 1 }}
+                            id="standard-basic"
+                            label="Your Name"
+                            name="name"
+                            onBlur={handleOnBlur}
+                            variant="standard" />
+                        <TextField
+                            sx={{ width: '50%', m: 1 }}
+                            id="standard-basic"
+                            label="Your Email"
+                            name="email"
+                            type="email"
+                            onBlur={handleOnBlur}
+                            variant="standard" />
+                        <TextField
+                            sx={{ width: '50%', m: 1 }}
+                            id="standard-basic"
+                            label="Your Password"
+                            type="password"
+                            name="password"
+                            onBlur={handleOnBlur}
+                            variant="standard" />
+                        <TextField
+                            sx={{ width: '50%', m: 1 }}
+                            id="standard-basic"
+                            label="ReType Your Password"
+                            type="password"
+                            name="password2"
+                            onBlur={handleOnBlur}
+                            variant="standard" />
+
+                        <Button sx={{ width: '50%', m: 1 }} type="submit" variant="contained">Register</Button>
+                        <Box style={{ textAlign: "center" }}>
+                            <NavLink
+                                style={{ textDecoration: 'none' }}
+                                to="/login">
+                                <Button variant="text">Already Registered? Please Login</Button>
+                            </NavLink>
+                        </Box>
+                    </form>}
+                    {isLoading && <CircularProgress />}
+                    {user?.email && <Alert severity="success">User Created successfully!</Alert>}
+                    {authError && <Alert severity="error">{authError}</Alert>}
+                </Box>
+            </Container>
             <Footer></Footer>
-        </div>
+        </Box>
     );
 };
 
-export default Registration;
+export default Register;

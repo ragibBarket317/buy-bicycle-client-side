@@ -1,67 +1,74 @@
-import React from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
-import { Form } from 'react-bootstrap';
+import { Container, Typography, TextField, Button, CircularProgress, Alert } from '@mui/material';
+import React, { useState } from 'react';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { Box } from '@mui/system';
 import Header from '../shared/Header/Header';
 import Footer from '../shared/Footer/Footer';
 
 const Login = () => {
-    const { signInUsingGoogle, handlePassword, signInUsingEmailPassword, handleEmail, error, setError, password } = useAuth();
+    const [loginData, setLoginData] = useState({});
     const location = useLocation();
     const history = useHistory();
-    const redirect_uri = location.state?.from || '/home';
-    // Google Redirect process
-    const googleLogin = () => {
-        signInUsingGoogle()
-            .then((result) => {
-                history.push(redirect_uri)
-            })
+    const { user, loginUser, signInWithGoogle, isLoading, authError } = useAuth();
+
+    const handleOnBlur = e => {
+        const field = e.target.name;
+        const value = e.target.value;
+        const newLoginData = { ...loginData };
+        newLoginData[field] = value;
+        setLoginData(newLoginData);
     }
-    // Email Password Redirect Process
-    const emailPasswordLogin = () => {
-        if (password.length < 6) {
-            setError('please enter at least 6 charectar')
-            return;
-        }
-        signInUsingEmailPassword()
-            .then((result) => {
-                history.push(redirect_uri)
-                setError('')
-                alert('Login Successful')
-            })
-            .catch((error) => {
-                setError(error.message)
-            })
+    const handleLoginSubmit = e => {
+        loginUser(loginData.email, loginData.password, location, history);
+        e.preventDefault();
+    }
+
+    const handleGoogleSignIn = () => {
+        signInWithGoogle(location, history)
     }
     return (
-        <div>
+        <Box>
             <Header></Header>
-            <div className="container py-5">
-                <div className="w-50 mx-auto">
-                    <div style={{ backgroundColor: "#F0F2F2", padding: "20px" }} className="mt-5 shadow-sm">
-                        <div>
-                            <h2 className="mb-3 text-center">Please Login</h2>
-                            <Form.Group className="mb-3" controlId="formGroupEmail">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control onBlur={handleEmail} type="email" placeholder="Enter email" required />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formGroupPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control onBlur={handlePassword} type="password" placeholder="Password" required />
-                            </Form.Group>
-                            <p className="text-danger">{error}</p>
-                            <button onClick={emailPasswordLogin} className="btn btn-primary w-100 mt-5" type="submit">Login</button><br />
-                            <p className="text-center mt-3">--------------------OR----------------------</p>
-                            <div className="text-center mt-2">
-                                <button onClick={googleLogin} className="btn btn-warning w-lg-25 mx-3" type="submit">Google Sign in</button>
-                                <p>new user? please <Link to="/register">register</Link></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Container style={{ textAlign: "center" }} sx={{ p: 5 }}>
+                <Box sx={{ boxShadow: 4 }} style={{ backgroundColor: "#F0F2F2", padding: '60px 0', textAlign: "center" }}>
+                    <Typography variant="h4" gutterBottom>Please Login</Typography>
+                    {!isLoading && <form onSubmit={handleLoginSubmit}>
+                        <TextField
+                            sx={{ width: '50%', m: 1 }}
+                            id="standard-basic"
+                            label="Your Email"
+                            name="email"
+                            type="email"
+                            onBlur={handleOnBlur}
+                            variant="standard" />
+                        <TextField
+                            sx={{ width: '50%', m: 1 }}
+                            id="standard-basic"
+                            label="Your Password"
+                            type="password"
+                            name="password"
+                            onBlur={handleOnBlur}
+                            variant="standard" />
+
+                        <Button sx={{ width: '50%', m: 1 }} type="submit" variant="contained">Login</Button>
+                        <Box style={{ textAlign: "center" }}>
+                            <NavLink
+                                style={{ textDecoration: 'none' }}
+                                to="/register">
+                                <Button variant="text">New User? Please Register</Button>
+                            </NavLink>
+                        </Box>
+                    </form>}
+                    {isLoading && <CircularProgress />}
+                    {user?.email && <Alert severity="success">Login successfully</Alert>}
+                    {authError && <Alert severity="error">{authError}</Alert>}
+                    <p>------------------------</p>
+                    <Button onClick={handleGoogleSignIn} variant="contained">Google Sign In</Button>
+                </Box>
+            </Container>
             <Footer></Footer>
-        </div>
+        </Box>
     );
 };
 
