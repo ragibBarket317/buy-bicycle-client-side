@@ -6,24 +6,35 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
 import MyOrders from '../MyOrders/MyOrders';
-import { Link, NavLink } from 'react-router-dom';
+import {
+    Switch,
+    Route,
+    Link,
+    useRouteMatch
+} from "react-router-dom";
+import Payment from '../Payment/Payment';
+import HomePage from '../HomePage/HomePage';
+import MakeAdmin from '../MakeAdmin/MakeAdmin';
+import useAuth from '../../../hooks/useAuth';
+import AdminRoute from '../../AdminRoute/AdminRoute';
+import UserReview from '../UserReview/UserReview';
+import Logout from '../Logout/Logout';
+import ManageOrder from '../ManageOrder/ManageOrder';
+import AddProduct from '../AddProduct/AddProduct';
+import RemoveProduct from '../RemoveProduct/RemoveProduct';
 
 const drawerWidth = 220;
 
 function DashboardHome(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
-
+    const { admin, logout, user } = useAuth();
+    let { path, url } = useRouteMatch();
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -31,20 +42,25 @@ function DashboardHome(props) {
     const drawer = (
         <div>
             <Toolbar />
-            <div style={{ textAlign: "center" }}>
-                <Link to="/products" className="fw-bolder">Product</Link>
-            </div>
-            <Divider />
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
+            <li style={{ listStyle: "none", padding: "5px 20px" }}><Link to="/products" style={{ fontWeight: "bold", textDecoration: "none", color: "black", }}>Product</Link></li>
+            <Box style={{ paddingLeft: "20px" }}>
+
+
+                <li style={{ listStyle: "none", paddingBottom: "5px" }}><Link to={`${url}/dashboard`} style={{ color: "black", textDecoration: "none" }}>Dashboard</Link></li>
+                <li style={{ listStyle: "none", paddingBottom: "5px" }}><Link to={`${url}/payment`} style={{ color: "black", textDecoration: "none" }}>Payment</Link></li>
+                <li style={{ listStyle: "none", paddingBottom: "5px" }}><Link to={`${url}/myorders`} style={{ color: "black", textDecoration: "none" }}>My Orders</Link></li>
+                <li style={{ listStyle: "none", paddingBottom: "5px" }}><Link to={`${url}/review`} style={{ color: "black", textDecoration: "none" }}>Review</Link></li>
+                {admin && <Box>
+                    <li style={{ listStyle: "none", paddingBottom: "5px" }}><Link to={`${url}/makeAdmin`} style={{ color: "black", textDecoration: "none" }}>Make Admin</Link></li>
+                    <li style={{ listStyle: "none", paddingBottom: "5px" }}><Link to={`${url}/manageOrder`} style={{ color: "black", textDecoration: "none" }}>Manage All Orders</Link></li>
+                    <li style={{ listStyle: "none", paddingBottom: "5px" }}><Link to={`${url}/addProduct`} style={{ color: "black", textDecoration: "none" }}>Add Product</Link></li>
+                    <li style={{ listStyle: "none", paddingBottom: "5px" }}><Link to={`${url}/removeProduct`} style={{ color: "black", textDecoration: "none" }}>Manage Products</Link></li>
+                </Box>
+                }
+                {user?.email ? <Button onClick={logout} variant="contained">Logout</Button> :
+                    <Link to={`${url}/login`}>Login</Link>
+                }
+            </Box>
         </div>
     );
 
@@ -60,7 +76,7 @@ function DashboardHome(props) {
                     ml: { sm: `${drawerWidth}px` },
                 }}
             >
-                <Toolbar>
+                <Toolbar style={{ backgroundColor: "black" }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -97,6 +113,7 @@ function DashboardHome(props) {
                     {drawer}
                 </Drawer>
                 <Drawer
+
                     variant="permanent"
                     sx={{
                         display: { xs: 'none', sm: 'block' },
@@ -112,11 +129,35 @@ function DashboardHome(props) {
                 sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
             >
                 <Toolbar />
-                <Typography paragraph>
-                    contant here
-                    <MyOrders></MyOrders>
-                </Typography>
-
+                <Switch>
+                    <Route exact path={path}>
+                        <HomePage></HomePage>
+                    </Route>
+                    <Route exact path={`${path}/payment`}>
+                        <Payment></Payment>
+                    </Route>
+                    <Route exact path={`${path}/myorders`}>
+                        <MyOrders></MyOrders>
+                    </Route>
+                    <AdminRoute exact path={`${path}/makeAdmin`}>
+                        <MakeAdmin></MakeAdmin>
+                    </AdminRoute>
+                    <AdminRoute exact path={`${path}/manageOrder`}>
+                        <ManageOrder></ManageOrder>
+                    </AdminRoute>
+                    <AdminRoute exact path={`${path}/addProduct`}>
+                        <AddProduct></AddProduct>
+                    </AdminRoute>
+                    <AdminRoute exact path={`${path}/removeProduct`}>
+                        <RemoveProduct></RemoveProduct>
+                    </AdminRoute>
+                    <Route exact path={`${path}/review`}>
+                        <UserReview></UserReview>
+                    </Route>
+                    <Route exact path={`${path}/login`}>
+                        <Logout></Logout>
+                    </Route>
+                </Switch>
             </Box>
         </Box>
     );

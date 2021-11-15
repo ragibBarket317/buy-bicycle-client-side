@@ -6,7 +6,7 @@ const CycleCard = (props) => {
     const { name, title, img, userRating, rating, price, _id } = props.cycle;
     return (
         <Col sm={12} md={4} className="my-3">
-            <CardGroup className="h-100 text-center shadow-md">
+            <CardGroup className="h-100 text-center">
                 <Card>
                     <div>
                         <Card.Img variant="top" src={img} style={{ width: "250px", height: "250px" }} />

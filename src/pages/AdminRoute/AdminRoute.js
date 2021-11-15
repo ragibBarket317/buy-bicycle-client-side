@@ -3,17 +3,17 @@ import { Spinner } from 'react-bootstrap';
 import { Redirect, Route } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 // Use Private Router
-const PrivateRoute = ({ children, ...rest }) => {
-    const { user, isloading } = useAuth();
+const AdminRoute = ({ children, ...rest }) => {
+    const { user, isloading, admin } = useAuth();
     if (isloading) {
         return <Spinner animation="border" variant="dark" />
     }
     return (
         <Route
             {...rest}
-            render={({ location }) => user?.displayName || user?.email ? children : <Redirect
+            render={({ location }) => user.displayName && user?.email && admin ? children : <Redirect
                 to={{
-                    pathname: "/login",
+                    pathname: "/",
                     state: { from: location }
                 }}
             ></Redirect>
@@ -25,4 +25,4 @@ const PrivateRoute = ({ children, ...rest }) => {
     );
 };
 
-export default PrivateRoute;
+export default AdminRoute;

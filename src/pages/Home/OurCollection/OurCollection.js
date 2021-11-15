@@ -12,7 +12,7 @@ const OurCollection = () => {
     return (
         <div style={{ marginTop: "-65px", background: "#F0F2F2", paddingTop: "180px", paddingBottom: "80px" }}>
             <Container>
-                <h1 className="fw-bolder text-center mb-5">Our New Collection</h1>
+                <h1 className="fw-bolder text-center mb-5">What Our Client Say</h1>
                 <Row >
                     {
                         cycles.slice(0, 6).map(cycle => <CycleCard

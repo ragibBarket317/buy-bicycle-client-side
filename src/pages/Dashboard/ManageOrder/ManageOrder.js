@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import useAuth from '../../../hooks/useAuth';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,16 +8,13 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 
-
-const MyOrders = () => {
-    const { user } = useAuth()
-    const [myOrders, setMyOrders] = useState([])
+const ManageOrder = () => {
+    const [allOrder, setAllOrder] = useState([]);
     useEffect(() => {
-        fetch(`http://localhost:5000/purchase?email=${user.email}`)
+        fetch('http://localhost:5000/purchase')
             .then(res => res.json())
-            .then(data => setMyOrders(data))
+            .then(data => setAllOrder(data))
     }, [])
-
     const handleDeleteUser = id => {
         const deleting = window.confirm('Are you sure, you want to delete?');
         if (deleting) {
@@ -29,15 +25,15 @@ const MyOrders = () => {
                 .then(data => {
                     if (data.deletedCount > 0) {
                         alert('Successfully deleted.')
-                        const remainingUser = myOrders.filter(user => user._id !== id);
-                        setMyOrders(remainingUser);
+                        const remainingUser = allOrder.filter(user => user._id !== id);
+                        setAllOrder(remainingUser);
                     }
                 })
         }
     }
     return (
         <div>
-            <h1>My Orders: {myOrders.length}</h1>
+            <h1>Total Orders: {allOrder.length}</h1>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -50,7 +46,7 @@ const MyOrders = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {myOrders.map((row) => (
+                        {allOrder.map((row) => (
                             <TableRow
                                 key={row._id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -71,4 +67,4 @@ const MyOrders = () => {
     );
 };
 
-export default MyOrders;
+export default ManageOrder;
