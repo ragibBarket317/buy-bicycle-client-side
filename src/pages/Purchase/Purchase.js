@@ -9,7 +9,7 @@ const Purchase = () => {
     const { id } = useParams();
     const [purchase, setPurchase] = useState([]);
     useEffect(() => {
-        fetch(`http://localhost:5000/cycles/${id}`)
+        fetch(`https://vast-tundra-91484.herokuapp.com/cycles/${id}`)
             .then(res => res.json())
             .then(data => setPurchase(data))
     }, [])

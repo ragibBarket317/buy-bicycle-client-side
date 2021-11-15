@@ -5,7 +5,7 @@ const UserReview = () => {
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data);
-        fetch('http://localhost:5000/review', {
+        fetch('https://vast-tundra-91484.herokuapp.com/review', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

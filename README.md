@@ -1,6 +1,6 @@
 # Getting Started with Buy Bycycle
 
-This is my website [fun touring](https://fun-touring.web.app).
+This is my website [Buy Bycycle](https://buy-bycycle.web.app/).
 In this site, client buy a cycle . It is a single page application. This wesite has home page, product page , buy now page , user dashboard & admine dashboard.
 Admin easliy manage this website .
 

@@ -9,7 +9,7 @@ import './MoreProducts.css'
 const MoreProducts = () => {
     const [allCycle, setAllCycle] = useState([])
     useEffect(() => {
-        fetch('http://localhost:5000/cycles')
+        fetch('https://vast-tundra-91484.herokuapp.com/cycles')
             .then(res => res.json())
             .then(data => setAllCycle(data))
     }, [])

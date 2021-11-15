@@ -7,7 +7,7 @@ const PurchaseNow = (props) => {
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data);
-        fetch('http://localhost:5000/purchase', {
+        fetch('https://vast-tundra-91484.herokuapp.com/purchase', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

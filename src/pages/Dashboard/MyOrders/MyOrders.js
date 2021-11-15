@@ -14,7 +14,7 @@ const MyOrders = () => {
     const { user } = useAuth()
     const [myOrders, setMyOrders] = useState([])
     useEffect(() => {
-        fetch(`http://localhost:5000/purchase?email=${user.email}`)
+        fetch(`https://vast-tundra-91484.herokuapp.com/purchase?email=${user.email}`)
             .then(res => res.json())
             .then(data => setMyOrders(data))
     }, [])
@@ -22,7 +22,7 @@ const MyOrders = () => {
     const handleDeleteUser = id => {
         const deleting = window.confirm('Are you sure, you want to delete?');
         if (deleting) {
-            fetch(`http://localhost:5000/purchase/${id}`, {
+            fetch(`https://vast-tundra-91484.herokuapp.com/purchase/${id}`, {
                 method: 'DELETE',
             })
                 .then(res => res.json())

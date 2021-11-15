@@ -5,7 +5,7 @@ const AddProduct = () => {
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data);
-        fetch('http://localhost:5000/cycles', {
+        fetch('https://vast-tundra-91484.herokuapp.com/cycles', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

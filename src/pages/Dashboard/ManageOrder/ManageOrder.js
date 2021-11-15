@@ -11,14 +11,14 @@ import { Button } from '@mui/material';
 const ManageOrder = () => {
     const [allOrder, setAllOrder] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/purchase')
+        fetch('https://vast-tundra-91484.herokuapp.com/purchase')
             .then(res => res.json())
             .then(data => setAllOrder(data))
     }, [])
     const handleDeleteUser = id => {
         const deleting = window.confirm('Are you sure, you want to delete?');
         if (deleting) {
-            fetch(`http://localhost:5000/purchase/${id}`, {
+            fetch(`https://vast-tundra-91484.herokuapp.com/purchase/${id}`, {
                 method: 'DELETE',
             })
                 .then(res => res.json())
